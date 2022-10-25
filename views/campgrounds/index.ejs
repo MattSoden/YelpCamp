@@ -1,0 +1,49 @@
+<% layout('layouts/boilerplate') %>
+<div id="cluster-map" class="mb-3"></div>
+<div class="container">
+    <h1>All Campgrounds</h1>
+
+    
+        <% for (let campground of campgrounds.reverse()) {%>
+            <div class="card mb-3 text-bg-light">
+                <div class="row">
+                    <div class="col-md-4 my-auto">
+                        <div class="card-body">
+                        <% if(campground.images.length) {%>
+                        <img class="img-fluid rounded" alt="" src="<%= campground.images[0].url %>" crossorigin>
+                        <% } else { %> 
+                        <img src="img-fluid" alt="" src="https://res.cloudinary.com/dw1bwbiw0/image/upload/v1665746546/YelpCamp/sw70ak3im5ux6ifkl8m4.avif" crossorigin>
+                        <% } %> 
+                    </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"><u><%= campground.title %></u></h5>                            
+                            <p class="card-text"><%= campground.description %></p>
+                            <ul class="list-unstyled list-inline">
+                                <p class="card-text d-inline ">Available Activities:  </p>
+                                <% for (let i = 0; i < campground.activities.length; i++) { %>
+                                <li class="list-inline-item">
+                                    <div>
+                                        <span class="badge text-bg-success">
+                                        <%= campground.activities[i]%>
+                                        </span>
+                                    </div>
+                                </li>
+                                <% } %>
+                            </ul>
+                            <p class="card-text font-italic text-muted"><%= campground.location %></p>
+                            <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">View <%= campground.title %></a>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        <% } %>
+    </div>
+        <script>
+        const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+        const campgrounds = {features: <%- JSON.stringify(campgrounds) %>};
+        </script>
+
+        <script src="/javascripts/clusterMap.js"></script>
+    
